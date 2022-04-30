@@ -1,0 +1,10 @@
+{
+    "nombre" : "API Rest Xipe - Sistema Ventas",
+    "configDB" : {
+        "Host":"mongodb://localhost:27017/xp_sisventas"
+    },
+    "configToken" : {
+        "SEED" : "secret",
+        "expiration" : "24h"
+    }
+}
