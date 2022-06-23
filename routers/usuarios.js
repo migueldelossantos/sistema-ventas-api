@@ -4,15 +4,14 @@ const bcrypt = require('bcrypt');
 
 //Req Personales
 const Usuario = require('../models/usuario_model');
-const verificarToken = require('../config/middlewares/auth')
+const verificarToken = require('../middlewares/auth')
 
 const ruta = express.Router();
 
 //GET Usuarios
 ruta.get('/',verificarToken,(req,res)=>{
-    let resulado = listarUsuariosActivos()
-    .select({nombre:1,email:1});
-    resulado.then(usuarios=>{
+    let resultado = listarUsuariosActivos();
+    resultado.then(usuarios=>{
         res.json(usuarios);
     }).catch(err=>{
         res.status(400).json({
@@ -21,10 +20,22 @@ ruta.get('/',verificarToken,(req,res)=>{
     });
 });
 
+//Get By Id
+ruta.get('/:id',verificarToken,(req,res)=>{
+    let resultado = getUsuarioById(req.body.id);
+    resultado.then(usr=>{
+        res.json({
+            usuario : usr
+        })
+    }).catch(err=>{
+        res.status(400).json({
+            error : err
+        })
+    });
+})
+
 //POST Usuario
 ruta.post('/',(req,res)=>{
-    let body = req.body;
-    let resultado = crearUsuario(body);
 
     //Validación de Email
     Usuario.findOne({email:body.email},(error,usuario)=>{
@@ -35,35 +46,39 @@ ruta.post('/',(req,res)=>{
             return res.status(400).json({
                 message:'El Usuario ya existe.'
             });
+        }else{
+            let body = req.body;
+            let resultado = crearUsuario(body);
+
+            //Registro de Usuario
+            resultado.then( usr => {
+                res.json({
+                    usuario : usr
+                })
+            })
+            .catch(err => {
+                res.status(400).json({
+                    error : err
+                })
+            });
         }
     });
-
-    //Registro de Usuario
-    resultado.then( usr => {
-        res.json({
-            usuario : usr
-        })
-    })
-    .catch(err => {
-        res.status(400).json({
-            error : err
-        })
-    });
+    
 });
 
 //PUT Usuario
-ruta.put('/:id',(req,res) => {
-    let resulado = actualizarUsuario(req.body.id, req.body);
+ruta.put('/:id',verificarToken,(req,res) => {
+    let resultado = actualizarUsuario(req.body.id, req.body);
 
-    resulado.then(valor =>{
+    resultado.then(valor =>{
         res.json({
             usuario : valor
         });
     }).catch(err=>{
         res.status(400).json({
             error : err
-        })
-    })
+        });
+    });
 });
 
 //Funcion Listar Usuarios
@@ -72,12 +87,19 @@ async function listarUsuariosActivos(){
     return usuarios;
 }
 
+//Funcion Get By Id
+async function getUsuarioById(id){
+    let usuario = await Usuario.findById(id);
+    return usuario;
+}
+
 //Función solo para guardar elemento
 async function crearUsuario(body){
     let usuario = new Usuario({
         email       : body.email,
         nombre      : body.nombre,
-        password    : bcrypt.hashSync( body.password, 10)
+        password    : bcrypt.hashSync( body.password, 10),
+        apellidoPaterno: body.apellidoPaterno
     });
     // Método para guardar documento (objeto)
     return await usuario.save();

@@ -1,0 +1,22 @@
+db.createRole(
+    {
+        role:"xipeRoleAdmin",
+        privileges:[
+            {
+                resource:{db:"xp_sisventas",collection:""},
+                actions:["changeStream","collStats","convertToCapped","createCollection","dbHash","dbStats","dropCollection","createIndex","dropIndex","find","insert","killCursors","listIndexes","listCollections","remove","renameCollectionSameDB","update"]
+            }
+        ],
+        roles:[]
+    }
+    );
+
+db.createUser(
+    {
+        user:"xipe",
+        pwd:passwordPrompt(),
+        roles:[
+            {role:"xipeRoleAdmin",db:"xp_sisventas"}
+        ]
+    }
+);

@@ -15,15 +15,16 @@ mongoose.connect(
             useUnifiedTopology: true
         }).then(() => console.log('Conectado a MongoDB'))
         .catch(err=>console.log('No se pudo correctar a MongoDB ',err));
+//mongoose.set('useCreateIndex',true);
 
 const app = express();
 
 app.use(express.json()); // body
-app.use(express.urlencoded()); // Decodificaión de datos por url
+app.use(express.urlencoded({extended:true})); // Decodificaión de datos por url
 
 //Rutas personalizadas
 app.use("/api/usuarios",usuarios);
-app.usr("/api/login",auth);
+app.use("/api/login",auth);
 
 const port = process.env.PORT || 3000;
 

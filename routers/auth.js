@@ -10,15 +10,16 @@ const Usuario = require('../models/usuario_model');
 const ruta = express.Router();
 
 ruta.post('/', (req,res)=>{
-    Usuario.findOne({email:body.email})
+    console.log('req.body.email :>> ', req.body.email);
+    Usuario.findOne({email : req.body.email})
         .then(data=>{
             if(data){
-                let passwordValidate = bcrypt.compareSync(req.body.password, datos.password);
+                let passwordValidate = bcrypt.compareSync(req.body.password, data.password);
                 if(!passwordValidate) return res.status(400).json({error:'ok',message:'Usuario o contaseña incorrecta.'})
 
                 //token
                 let jwtoken = jsonwebtoken.sign({
-                        data : {_id:data._id, nombre:data.nombre,email:data.email}
+                        usuario : {_id:data._id, nombre:data.nombre,email:data.email}
                     },
                     config.get('configToken.SEED'),
                     {
@@ -42,7 +43,7 @@ ruta.post('/', (req,res)=>{
         .catch(err => {
             res.status(400).json({
                 error : 'ok',
-                message : 'Server Error.'
+                message : 'Server Error.' + err
             })
         });
 });
