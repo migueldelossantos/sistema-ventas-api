@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //GET By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getDetalleOfertaById(req.body.id);
+    let resultado = getDetalleOfertaById(req.params.id);
     resultado.then(detalle=>{
         res.json({
             detalleOferta : detalle
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 // GET By Oferta Id
 ruta.get('/oferta/:id',verificarToken,(req,res)=>{
-    let resultado = getDetalleByOfertaId(req.body.id);
+    let resultado = getDetalleByOfertaId(req.params.id);
     resultado.then(detalles=>{
         res.json({
             detallesOferta : detalles
@@ -35,7 +35,7 @@ ruta.get('/oferta/:id',verificarToken,(req,res)=>{
 
 //POST
 ruta.post('/',verificarToken,(req,res)=>{
-    let resultado = crearDetalleOferta(body);
+    let resultado = crearDetalleOferta(req.body);
 
     DetalleOferta.findOne({
         ofertaId : body.ofertaId,
@@ -52,24 +52,24 @@ ruta.post('/',verificarToken,(req,res)=>{
             res.json({
                 detalleOferta : detalleOfer
             });
+        }else{
+            //Crea Nuevo detalle si no existe
+            resultado.then(detalle=>{
+                res.json({
+                    detalleOferta : detalle
+                });
+            }).catch(err=>{
+                res.status(400).json({
+                    error : err
+                })
+            });
         }
-    });
-
-    //Crea Nuevo detalle si no existe
-    resultado.then(detalle=>{
-        res.json({
-            detalleOferta : detalle
-        });
-    }).catch(err=>{
-        res.status(400).json({
-            error : err
-        })
     });
 })
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarDetalleOferta(req.body.id);
+    let resultado = actualizarDetalleOferta(req.params.id);
     resultado.then(detalle=>{
         res.json({
             detalleOferta : detalle

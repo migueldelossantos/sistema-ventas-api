@@ -8,7 +8,6 @@ const ruta = express.Router();
 //Get Categorias
 ruta.get('/',verificarToken,(req,res)=>{
     let resultado = listarCategorias();
-
     resultado.then(categorias=>{
         res.json(categorias);
     }).catch(err=>{
@@ -20,7 +19,7 @@ ruta.get('/',verificarToken,(req,res)=>{
 
 //GEt By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getCategoria(req.body.id);
+    let resultado = getCategoria(req.params.id);
     resultado.then(cat=>{
         res.json({
             categoria : cat
@@ -34,9 +33,8 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //POST Categoria
 ruta.post('/',verificarToken,(req,res)=>{
-    let body = res.body;
+    let body = req.body;
     let resultado = crearCategoria(body);
-
     resultado.then(cat=>{
         res.json(cat);
     }).catch(err=>{
@@ -48,7 +46,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT Categoria
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarCategoria(req.body.id,req.body);
+    let resultado = actualizarCategoria(req.params.id,req.body);
 
     resultado.then(cat=>{
         res.json({
@@ -63,7 +61,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //DELETE Categoria
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = elimiarCategoria(req.body.id);
+    let resultado = elimiarCategoria(req.params.id);
 
     resultado.then(cat=>{
         res.json({
@@ -112,7 +110,7 @@ async function actualizarCategoria(id,body){
 
 //Funcion Delete
 async function elimiarCategoria(id){
-    let categoria = await Categoria.deleteOne(id);
+    let categoria = await Categoria.deleteOne({_id:id});
     return categoria;
 }
 

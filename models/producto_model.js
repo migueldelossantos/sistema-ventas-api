@@ -55,6 +55,10 @@ const productoSchema = new mongoose.Schema({
         type:Number,
         default:0.0
     },
+    controlCaduta:{
+        type : String,
+        default: "No"
+    },
     imgPrincipal:{
         type:String
     },

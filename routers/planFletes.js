@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getPlanFleteById(req.body.id);
+    let resultado = getPlanFleteById(req.params.id);
     resultado.then(plan=>{
         res.json({
             planFlete : plan
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 // PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarPlanFleteById(req.body.id,req.body);
+    let resultado = actualizarPlanFleteById(req.params.id,req.body);
     resultado.then(plan=>{
         res.json({
             planFlete : plan
@@ -63,7 +63,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //DELETE
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = eliminarPlanById(req.body.id);
+    let resultado = eliminarPlanById(req.params.id);
     resultado.then(plan=>{
         res.json({
             planFlete : plan
@@ -83,7 +83,7 @@ async function getPlanFleteById(id){
 
 //Funcion Get Planes Activos
 async function getPlanesActivos(){
-    let planes = await PlanFlete.findOne({
+    let planes = await PlanFlete.find({
         estado : 'A'
     });
     return planes;

@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getDireccionById(req.body.id);
+    let resultado = getDireccionById(req.params.id);
     resultado.then(direc=>{
         res.json({
             direccion : direc
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //Get By Cliente Id
 ruta.get('/cliente/:id',verificarToken,(req,res)=>{
-    let resultado = getDireccionByClienteId(req.body.id);
+    let resultado = getDireccionByClienteId(req.params.id);
     resultado.then(direcs=>{
         res.json({
             dirreciones : direcs
@@ -49,7 +49,7 @@ ruta.post('/'.verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarDireccionCliente(req.body.id,req.body);
+    let resultado = actualizarDireccionCliente(req.params.id,req.body);
     resultado.then(direc=>{
         res.json({
             direccion : direc

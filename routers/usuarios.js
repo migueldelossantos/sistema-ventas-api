@@ -22,7 +22,7 @@ ruta.get('/',verificarToken,(req,res)=>{
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getUsuarioById(req.body.id);
+    let resultado = getUsuarioById(req.params.id);
     resultado.then(usr=>{
         res.json({
             usuario : usr
@@ -68,7 +68,7 @@ ruta.post('/',(req,res)=>{
 
 //PUT Usuario
 ruta.put('/:id',verificarToken,(req,res) => {
-    let resultado = actualizarUsuario(req.body.id, req.body);
+    let resultado = actualizarUsuario(req.params.id, req.body);
 
     resultado.then(valor =>{
         res.json({

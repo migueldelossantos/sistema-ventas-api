@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getProductoById(req.body.id);
+    let resultado = getProductoById(req.params.id);
     resultado.then(produc=>{
         res.json({
             producto : produc
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //Get By CodigoBarras
 ruta.get('/codigo/:codigoBarra',verificarToken,(req,res)=>{
-    let resultado = getProductoByCodigo(req.body.codigoBarra);
+    let resultado = getProductoByCodigo(req.params.codigoBarra);
     resultado.then(produc=>{
         res.json({
             producto : produc
@@ -35,7 +35,7 @@ ruta.get('/codigo/:codigoBarra',verificarToken,(req,res)=>{
 
 //Get By Nombre
 ruta.get('/nombre/:nombre',verificarToken,(req,res)=>{
-    let resultado = getProductoByNombre(req.body.nombre);
+    let resultado = getProductoByNombre(req.params.nombre);
     resultado.then(producs=>{
         res.json({
             productos : producs
@@ -62,7 +62,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 })
 
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarProducto(req.body.id,req.body);
+    let resultado = actualizarProducto(req.params.id,req.body);
     resultado.then(produc=>{
         res.json({
             producto : produc
@@ -90,7 +90,10 @@ async function getProductoByCodigo(codigoBarra){
 
 async function getProductoByNombre(nombre){
     let producto = await Producto.find({
-        nombre : /$nombre/
+        nombre : {
+            $regex : '.*'+nombre+'.*',
+            $options : "$i"
+        }
     });
     return producto;
 }

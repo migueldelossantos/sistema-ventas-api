@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getProveedorById(req.body.id);
+    let resultado = getProveedorById(req.params.id);
     resultado.then(prov=>{
         res.json({
             proveedor : prov
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarProveedor(req.body.id);
+    let resultado = actualizarProveedor(req.params.id);
     resultado.then(prov=>{
         res.json({
             proveedor : prov

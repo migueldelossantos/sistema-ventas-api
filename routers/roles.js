@@ -31,7 +31,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 // POST Crear
 ruta.post('/',(req,res)=>{
-    let resultado = crearRol(res.body);
+    let resultado = crearRol(req.body);
 
     resultado.then(rol=>{
         res.json({
@@ -52,7 +52,7 @@ async function listarRoles(){
 
 // Funcion Obtener Rol poy Id
 async function getRol(id){
-    let rol = await Rol.findById(id).get();
+    let rol = await Rol.findById(id);
     return rol;
 }
 

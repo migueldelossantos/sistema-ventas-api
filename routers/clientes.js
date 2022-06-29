@@ -21,7 +21,7 @@ ruta.get('/',verificarToken,(req,res)=>{
 
 //GET By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getCliente(req.body.id);
+    let resultado = getCliente(req.params.id);
     resultado.then(cli=>{
         res.json({
             cliente : cli
@@ -35,8 +35,16 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //GET By Nonbre
 ruta.get('/nombre/:nombre',verificarToken,(req,res)=>{
-    let clientes = listarClientesByNombre(req.body.nombre);
-    return clientes;
+    let resultado = listarClientesByNombre(req.params.nombre);
+    resultado.then(cli=>{
+        res.json({
+            cliente : cli
+        }).catch(err=>{
+            res.status(400).json({
+                error : err
+            })
+        })
+    })
 })
 
 //POST Cliente
@@ -98,7 +106,12 @@ async function getCliente(id){
 
 //Funcion Get Clientes By Nombre
 async function listarClientesByNombre(nombre){
-    let clientes = await Cliente.find({ nombreCompleto: '/$nombre/' });
+    let clientes = await Cliente.find({ 
+        nombreCompleto: {
+            $regex : '.*'+nombre+',*',
+            $options : "$i"
+        }
+    });
     return clientes;
 }
 
@@ -119,7 +132,7 @@ async function crearCliente(body){
 
 //Funcion Actualizar cliente
 async function actulizarCliente(id,body){
-    let cliente = Cliente.findByIdAndUpdate(id,{
+    let cliente = await Cliente.findByIdAndUpdate(id,{
         nombre      : body.nombre,
         apellidoPat : body.apellidoPat,
         apellidoMat : body.apellidoMat,

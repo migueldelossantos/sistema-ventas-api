@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getCompraById(req.body.id);
+    let resultado = getCompraById(req.params.id);
     resultado.then(comp=>{
         res.json({
             compra : comp
@@ -20,8 +20,8 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 })
 
 //Get By Fecha
-ruta.get('/:fechaIni/:fechaFin',verificarToken,(req,res)=>{
-    let resultado = getComprasByFecha(req.body.fechaIni,req.body.fechaFin);
+ruta.get('/fechas',verificarToken,(req,res)=>{
+    let resultado = getComprasByFecha(req.params.fechaIni,req.params.fechaFin);
     resultado.then(compras=>{
         res.json({
             compras
@@ -50,7 +50,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarCompra(req.body.id,req.body);
+    let resultado = actualizarCompra(req.params.id,req.body);
     resultado.then(comp=>{
         res.json({
             compra : comp
@@ -64,7 +64,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //DELETE
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = eliminarCompra(id);
+    let resultado = eliminarCompra(req.params.id);
     resultado.then(comp=>{
         res.json({
             compra : comp
@@ -78,7 +78,7 @@ ruta.delete('/:id',verificarToken,(req,res)=>{
 
 //Funcion Get Compras By Fecha
 async function getComprasByFecha(fechaIni,fechaFin){
-    let compras = await find({
+    let compras = await Compra.find({
         fecha : {
             $gte: fechaIni,
             $lte: fechaFin

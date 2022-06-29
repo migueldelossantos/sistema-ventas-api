@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get Cuenta By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getCuentaById(req.body.id);
+    let resultado = getCuentaById(req.params.id);
     resultado.then(cue=>{
         res.json({
             cuenta : cue
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //Get Cuenta By Cliente Id
 ruta.get('/cliente/:id',verificarToken,(req,res)=>{
-    let resultado = getCuentaByClienteId(req.body.id);
+    let resultado = getCuentaByClienteId(req.params.id);
     resultado.then(cue=>{
         res.json({
             cuenta : cue
@@ -63,7 +63,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarCuenta(req.body.id,req.body);
+    let resultado = actualizarCuenta(req.params.id,req.body);
     resultado.then(cue=>{
         res.json({
             cuenta : cue
@@ -77,7 +77,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //DELETE Cuenta
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = eliminarCuenta();
+    let resultado = eliminarCuenta(req.params.id);
     resultado.then(cue=>{
         res.json({
             cuenta : cue
@@ -130,6 +130,7 @@ async function eliminarCuenta(id){
             estado : 'E'
         }
     })
+    return cuenta;
 }
 
 module.exports = ruta;

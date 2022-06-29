@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id'.verificarToken,(req,res)=>{
-    let resultado = getFleteById(req.body.id);
+    let resultado = getFleteById(req.params.id);
     resultado.then(fle=>{
         res.json({
             flete : fle
@@ -20,8 +20,8 @@ ruta.get('/:id'.verificarToken,(req,res)=>{
 })
 
 //Get By Cliente Id
-ruta.get('/clienteId/:id',verificarToken,(req,res)=>{
-    let resultado = getFleteByClienteId(req.body.id);
+ruta.get('/cliente/:id',verificarToken,(req,res)=>{
+    let resultado = getFleteByClienteId(req.params.id);
     resultado.then(fle=>{
         res.json({
             flete : fle
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarFlete(req.id,req.body);
+    let resultado = actualizarFlete(req.params.id,req.body);
     resultado.then(fle=>{
         res.json({
             flete : fle

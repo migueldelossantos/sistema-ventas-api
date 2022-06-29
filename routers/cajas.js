@@ -19,7 +19,7 @@ ruta.get('/',verificarToken,(req,res)=>{
 
 //GET Caja By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getCaja(req.body.id);
+    let resultado = getCaja(req.params.id);
     resultado.then(caja=>{
         res.json(caja)
     }).catch(err=>{
@@ -32,7 +32,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 //POST
 ruta.post('/',verificarToken,(req,res)=>{
     let body = req.body;
-    let resultado = crearCaja(body);
+    let resultado = crearCaja(req.body);
     resultado.then(caja=>{
         res.json({
             caja : caja
@@ -46,7 +46,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 // PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarCaja(req.body.id,req.body);
+    let resultado = actualizarCaja(req.params.id,req.body);
     resultado.then(caja=>{
         res.json({
             caja : caja

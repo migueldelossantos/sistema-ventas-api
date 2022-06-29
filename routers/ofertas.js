@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getOfertaById(req.body.id);
+    let resultado = getOfertaById(req.params.id);
     resultado.then(ofer=>{
         res.json({
             oferta : ofer
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarOferta(req.body.id,req.body);
+    let resultado = actualizarOferta(req.params.id,req.body);
     resultado.then(ofer=>{
         res.json({
             oferta : ofer
@@ -63,7 +63,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //DELETE
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = eliminarOfertaById(req.body.id);
+    let resultado = eliminarOfertaById(req.params.id);
     resultado.then(ofer=>{
         res.json({
             oferta : ofer
@@ -83,7 +83,7 @@ async function getOfertaById(id){
 
 //Funcion Get Ofertas Activas
 async function getOfertasActivas(){
-    let ofertas = await findOne({
+    let ofertas = await Ofertta.findOne({
         estado : 'A'
     });
     return ofertas;

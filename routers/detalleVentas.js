@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getDetalleOfertaById(req.body.id);
+    let resultado = getDetalleOfertaById(req.params.id);
     resultado.then(detalle=>{
         res.json({
             detalleOferta : detalle
@@ -19,9 +19,9 @@ ruta.get('/:id',verificarToken,(req,res)=>{
     });
 })
 
-//Get By Oferta Id
-ruta.get('/ofertaId/:id',verificarToken,(req,res)=>{
-    let resultado = getDetallesByOfertaId(req.body.id);
+//Get By Venta Id
+ruta.get('/venta/:id',verificarToken,(req,res)=>{
+    let resultado = getDetallesByOfertaId(req.params.id);
     resultado.then(detalles=>{
         res.json({
             detallesOferta : detalles
@@ -51,23 +51,23 @@ ruta.post('/',verificarToken,(req,res)=>{
             res.json({
                 detalleVenta : detalleVent
             })
+        }else{
+            resultado.then(detalle=>{
+                res.json({
+                    detalleOferta : detalle
+                })
+            }).catch(err=>{
+                res.status(400).json({
+                    error : err
+                })
+            });
         }
-    });
-
-    resultado.then(detalle=>{
-        res.json({
-            detalleOferta : detalle
-        })
-    }).catch(err=>{
-        res.status(400).json({
-            error : err
-        })
     });
 })
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarDetalleOferta(req.body.id);
+    let resultado = actualizarDetalleOferta(req.params.id);
     resultado.then(detalle=>{
         res.json({
             detalleOferta : detalle
@@ -88,7 +88,7 @@ async function getDetalleOfertaById(id){
 //Funcion Get By OfertaId
 async function getDetallesByOfertaId(id){
     let detalles = await DetalleOferta.find({
-        ofertaId : id
+        ventaId : id
     });
     return detalles;
 }

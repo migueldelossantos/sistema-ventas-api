@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getSubCategoriaById(req.body.id);
+    let resultado = getSubCategoriaById(req.params.id);
     resultado.then(subCat=>{
         res.json({
             subCategoria : subCat
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 //Get By CategoriaId
 ruta.get('/categoria/:id',verificarToken,(req,res)=>{
-    let resultado = getSubCatByCategoriId(req.body.id);
+    let resultado = getSubCatByCategoriId(req.params.id);
     resultado.then(subCats=>{
         res.json({
             subCategorias : subCats
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarSubCategoria(req.body.id,req.body);
+    let resultado = actualizarSubCategoria(req.params.id,req.body);
     resultado.then(subCat=>{
         res.json({
             subCategoria : subCat

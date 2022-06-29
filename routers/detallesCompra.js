@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get Detalle Compra By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getDetalleCompraById(req.body.id)
+    let resultado = getDetalleCompraById(req.params.id)
     resultado.then(detalle=>{
         res.json({
             detalleCompra : detalle
@@ -21,7 +21,7 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 
 // Get By CompraId
 ruta.get('/compra/:compraId',verificarToken,(req,res)=>{
-    let resultado = getDetalleCompraByCompraId(req.body.id);
+    let resultado = getDetalleCompraByCompraId(req.params.id);
     resultado.then(detalles=>{
         res.json({
             detallesCompras : detalles
@@ -53,24 +53,25 @@ ruta.post('/',verificarToken,(req,res)=>{
             res.json({
                 detalleCompra : detalleComp
             });
+        }else{
+            //Crea nuevo si no existe
+            resultado.then(detalle=>{
+                res.json({
+                    detalleCompra : detalle
+                })
+            }).catch(err=>{
+                res.status(400).json({
+                    error : err
+                })
+            });
         }
     });
 
-    //Crea nuevo si no existe
-    resultado.then(detalle=>{
-        res.json({
-            detalleCompra : detalle
-        })
-    }).catch(err=>{
-        res.status(400).json({
-            error : err
-        })
-    });
 })
 
 // PUT
 ruta.put('/:id',verificarToken,(req,req)=>{
-    let resultado = actualizarDetalleCompra(req.body.id);
+    let resultado = actualizarDetalleCompra(req.params.id);
     resultado.then(detalle=>{
         ress.json({
             detalleCompra : detalle

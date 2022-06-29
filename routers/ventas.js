@@ -7,7 +7,7 @@ const ruta = express.Router();
 
 //Get By Id
 ruta.get('/:id',verificarToken,(req,res)=>{
-    let resultado = getVentaById(req.body.id);
+    let resultado = getVentaById(req.params.id);
     resultado.then(vent=>{
         res.json({
             venta : vent
@@ -20,8 +20,8 @@ ruta.get('/:id',verificarToken,(req,res)=>{
 })
 
 //Get By Fecha
-ruta.get('/:fechaIni/:fechaFin',verificarToken,(req,res)=>{
-    let resultado = getVentasByFecha(req.body.fechaIni,req.body.fechaFin);
+ruta.get('/fecha',verificarToken,(req,res)=>{
+    let resultado = getVentasByFecha(req.params.fechaIni,req.params.fechaFin);
     resultado.then(vents=>{
         res.json({
             ventas : vents
@@ -49,7 +49,7 @@ ruta.post('/',verificarToken,(req,res)=>{
 
 //PUT
 ruta.put('/:id',verificarToken,(req,res)=>{
-    let resultado = actualizarVenta(req.body.id,req.body);
+    let resultado = actualizarVenta(req.params.id,req.body);
     resultado.then(vent=>{
         res.json({
             venta : vent
@@ -63,7 +63,7 @@ ruta.put('/:id',verificarToken,(req,res)=>{
 
 //Delete
 ruta.delete('/:id',verificarToken,(req,res)=>{
-    let resultado = eliminarVenta(req.body.id);
+    let resultado = eliminarVenta(req.params.id);
     resultado.then(vent=>{
         res.json({
             venta : vent
