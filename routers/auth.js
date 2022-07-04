@@ -28,9 +28,7 @@ ruta.post('/', (req,res)=>{
 
                 // Respuesta de Datos de Usuario y Token
                 res.json({
-                    usuario : {
-                        data
-                    },
+                    usuario : data,
                     jwtoken
                 });
             }else{
